@@ -4,7 +4,8 @@ import Cart from "../models/cart.model.js";
 // POST /api/cart/add - Add product to cart
 export const addToCart = async (req, res) => {
   try {
-    const { userId, productId, quantity } = req.body;
+    const userId = req.user.id;
+    const { productId, quantity } = req.body;
 
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({ error: "Invalid request" });
@@ -35,7 +36,9 @@ export const addToCart = async (req, res) => {
 // GET /api/cart - Get user’s cart
 export const getCart = async (req, res) => {
   try {
-    const { userId } = req.query;
+    // const { userId } = req.query;
+    const user = req.user;
+    const userId = user.id;
     if (!userId) return res.status(400).json({ error: "User ID required" });
 
     const cart = await Cart.findOne({ userId }).populate("items.productId");
@@ -48,7 +51,7 @@ export const getCart = async (req, res) => {
 // DELETE /api/cart/:id - Remove item from cart
 export const removeFromCart = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.user.id;
     const { id } = req.params;
 
     let cart = await Cart.findOne({ userId });

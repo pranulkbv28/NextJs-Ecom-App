@@ -2,12 +2,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import cookieOptions from "../constants/cookieOptions.js";
+import Cart from "../models/cart.model.js";
 
 export const register = async (req, res) => {
   try {
     const { email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ email, password: hashedPassword });
+    const cart = await Cart.create({ userId: user.id, items: [] });
+    user.card = cart.id;
+    await user.save();
     // console.log(user);
     const registeredUser = { id: user.id, email: user.email };
     res.status(201).json({ message: "User registered", registeredUser });
