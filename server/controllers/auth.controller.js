@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import cookieOptions from "../constants/cookieOptions.js";
 
 export const register = async (req, res) => {
   try {
@@ -27,10 +28,26 @@ export const login = async (req, res) => {
     const loggedInUser = { id: user.id, email: user.email };
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
-    res.json({ loggedInUser, token, message: "User logged in" });
+    res
+      .cookie("token", token, cookieOptions)
+      .json({ loggedInUser, token, message: "User logged in" });
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    if (!req.user) {
+      throw new Error("You are not logged in. Please log in to continue.");
+    }
+
+    return res
+      .clearCookie("token", cookieOptions)
+      .json({ message: "User logged out" });
+  } catch (error) {
+    return res.status(400).json({ "Error while logging out": error.message });
   }
 };
