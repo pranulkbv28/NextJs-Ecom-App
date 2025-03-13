@@ -4,6 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectMongoDB, sequelize } from "./config/db.js";
 import authRoute from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
+import orderRoutes from "./routes/order.routes.js";
 
 dotenv.config({
   path: "./.env",
@@ -31,6 +34,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (_req, res) => {
   res.send("Hello World");
