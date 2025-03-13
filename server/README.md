@@ -43,6 +43,18 @@
 }
 ```
 
+#### Logout - `/logout`
+
+- Method: `POST`
+- Description: Logout a user
+- Response:
+
+```json
+{ 
+    "message": "User logged out"
+}
+```
+
 ### Cart - `/api/cart`
 
 #### Get Cart - `/`
