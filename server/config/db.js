@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { Sequelize } from "sequelize";
+
+dotenv.config();
 
 const connectMongoDB = async () => {
   try {
@@ -17,16 +21,16 @@ console.log("User:", process.env.SQL_USER);
 console.log("Database:", process.env.SQL_DATABASE);
 console.log("Password:", process.env.SQL_PASSWORD ? "******" : "NOT SET"); // Mask password for security
 
-// const sequelize = new Sequelize(
-//   process.env.SQL_DATABASE,
-//   process.env.SQL_USER || "postgres", // Ensure correct username
-//   `${process.env.SQL_PASSWORD}`,
-//   {
-//     host: process.env.SQL_HOST,
-//     port: process.env.SQL_PORT, // Add port explicitly
-//     dialect: "postgres",
-//     logging: false,
-//   }
-// );
+const sequelize = new Sequelize(
+  process.env.SQL_DATABASE,
+  process.env.SQL_USER || "postgres", // Ensure correct username
+  `${process.env.SQL_PASSWORD}`,
+  {
+    host: process.env.SQL_HOST,
+    port: process.env.SQL_PORT, // Add port explicitly
+    dialect: "postgres",
+    logging: false,
+  }
+);
 
-export { connectMongoDB };
+export { connectMongoDB, sequelize };
