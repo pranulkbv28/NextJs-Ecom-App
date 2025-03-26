@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "backend for e-comm app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranulkbv28/NextJs-Ecom-App.git"
+  },
+  "keywords": [
+    "backend",
+    "fullstack",
+    "nextjs",
+    "mongodb"
+  ],
+  "author": "pranullkbv28",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pranulkbv28/NextJs-Ecom-App/issues"
+  },
+  "homepage": "https://github.com/pranulkbv28/NextJs-Ecom-App#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
