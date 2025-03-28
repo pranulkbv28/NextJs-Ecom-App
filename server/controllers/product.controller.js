@@ -52,6 +52,42 @@ export const addProduct = async (req, res) => {
   }
 };
 
+export const updateProduct = async (req, res) => {
+  /**
+   * Get Product ID from params
+   * Check if product exists
+   * Update product details
+   * Send response
+   */
+  try {
+    if (!req.user) throw new ErrorApiResponse(401, "Unauthorized access");
+
+    const { id } = req.params;
+    const { name, description, price, category, stock, image } = req.body;
+
+    const product = await Product.findById(id);
+    if (!product) throw new ErrorApiResponse(404, "Product not found");
+
+    product.name = name || product.name;
+    product.description = description || product.description;
+    product.price = price || product.price;
+    product.category = category || product.category;
+    product.stock = stock || product.stock;
+    if (image) product.image = image;
+
+    await product.save();
+
+    return res
+      .status(200)
+      .json(
+        new SuccessApiResponse(200, product, "Product updated successfully")
+      );
+  } catch (error) {
+    console.log(`Error while updating product: ${error.message}`);
+    return res.status(error.statusCode).json(error.message);
+  }
+};
+
 export const getProductById = async (req, res) => {
   /**
    * Get Product ID from params
@@ -93,6 +129,32 @@ export const getAllProducts = async (req, res) => {
       );
   } catch (error) {
     console.log(`Error while getting all products: ${error.message}`);
+    return res.status(error.statusCode).json(error.message);
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  /**
+   * Get Product ID from params
+   * Check if product exists
+   * Delete product
+   * Send response
+   */
+  try {
+    if (!req.user) throw new ErrorApiResponse(401, "Unauthorized access");
+
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+    if (!product) throw new ErrorApiResponse(404, "Product not found");
+
+    await product.remove();
+
+    return res
+      .status(200)
+      .json(new SuccessApiResponse(200, {}, "Product deleted successfully"));
+  } catch (error) {
+    console.log(`Error while deleting product: ${error.message}`);
     return res.status(error.statusCode).json(error.message);
   }
 };
