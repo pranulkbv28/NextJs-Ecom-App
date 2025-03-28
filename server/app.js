@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config({
   path: "./.env",
@@ -12,6 +13,9 @@ await connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/v1/users", userRoutes);
 
 app.get("/", (_req, res) => {
   res.send("API is running...");

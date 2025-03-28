@@ -34,17 +34,19 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Cart",
     },
-    orders: {
-      type: Schema.Types.ObjectId,
-      ref: "Orders",
-    },
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   { timestamps: true }
 );
 
 userSchema.methods.generateAuthToken = function () {
   const payload = {
-    id: this._id,
+    _id: this._id,
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
