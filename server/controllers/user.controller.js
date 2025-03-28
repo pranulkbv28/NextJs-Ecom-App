@@ -47,7 +47,7 @@ export const createUser = async (req, res) => {
       );
   } catch (error) {
     console.log(`Error while creating user: ${error.message}`);
-    return res.status(400).json(error);
+    return res.status(error.statusCode).json(error.message);
   }
 };
 
@@ -87,7 +87,7 @@ export const loginUser = async (req, res) => {
       );
   } catch (error) {
     console.log(`Error while logging in user: ${error.message}`);
-    return res.status(400).json(error);
+    return res.status(error.statusCode).json(error.message);
   }
 };
 
@@ -106,7 +106,7 @@ export const logoutUser = async (req, res) => {
       .json(new SuccessApiResponse(200, {}, "User logged out successfully"));
   } catch (error) {
     console.log(`Error while logging out user: ${error.message}`);
-    return res.status(400).json(error);
+    return res.status(error.statusCode).json(error.message);
   }
 };
 
