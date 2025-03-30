@@ -41,18 +41,14 @@ export const addToCart = async (req, res) => {
     const userCart = await Cart.findOne({ user: req.user._id });
     if (!userCart) throw new ErrorApiResponse(404, "Cart not found");
 
-    // Check if the product already exists in the cart
     const existingCartItem = userCart.products.find(
       (item) => item.product.toString() === productId
     );
 
     if (existingCartItem) {
-      // Calculate the difference in quantity
       const quantityDifference = quantity - existingCartItem.quantity;
 
-      // Update the stock based on the difference
       if (quantityDifference > 0) {
-        // Increasing quantity in the cart, reduce stock
         if (selectedProduct.stock < quantityDifference) {
           throw new ErrorApiResponse(400, "Product stock is not enough");
         }
@@ -60,16 +56,13 @@ export const addToCart = async (req, res) => {
           $inc: { stock: -quantityDifference },
         });
       } else if (quantityDifference < 0) {
-        // Reducing quantity in the cart, increase stock
         await selectedProduct.updateOne({
           $inc: { stock: Math.abs(quantityDifference) },
         });
       }
 
-      // Update the quantity in the cart
       existingCartItem.quantity = quantity;
     } else {
-      // If the product is not in the cart, add it
       if (selectedProduct.stock < quantity) {
         throw new ErrorApiResponse(400, "Product stock is not enough");
       }
@@ -77,7 +70,6 @@ export const addToCart = async (req, res) => {
       await selectedProduct.updateOne({ $inc: { stock: -quantity } });
     }
 
-    // Save the updated cart
     await userCart.save();
     await userCart.populate("products.product");
 
