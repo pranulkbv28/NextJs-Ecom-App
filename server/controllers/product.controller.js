@@ -148,7 +148,8 @@ export const deleteProduct = async (req, res) => {
     const product = await Product.findById(id);
     if (!product) throw new ErrorApiResponse(404, "Product not found");
 
-    await product.remove();
+    // await product.remove();
+    await Product.findByIdAndDelete(id);
 
     return res
       .status(200)
