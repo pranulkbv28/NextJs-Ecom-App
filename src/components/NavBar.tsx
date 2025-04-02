@@ -8,7 +8,7 @@ function NavBar() {
   const pathname = usePathname();
 
   return (
-    <nav>
+    <nav className="navbar-styles">
       <Link
         href="/"
         className={pathname === "/" ? "text-red-300" : "text-white"}
